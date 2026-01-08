@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const APPS_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbyWuNyybudc18dO83VPjdVWEujBK_Sm9YxUDbombhkJjGkSUCWc3asdGDPgznYdMlN6mQ/exec'; // termina com /exec
+  'https://script.google.com/macros/s/AKfycbyWuNyybudc18dO83VPjdVWEujBK_Sm9YxUDbombhkJjGkSUCWc3asdGDPgznYdMlN6mQ/exec';
 
 export default async function handler(
   req: VercelRequest,
@@ -12,21 +12,34 @@ export default async function handler(
   }
 
   try {
-    const { certidao } = req.body;
+    console.log('Body recebido na Vercel:', req.body);
+    const { certidao } = req.body || {};
+
+    if (!certidao) {
+      return res
+        .status(400)
+        .json({ ok: false, error: 'Payload sem certidao' });
+    }
 
     const gsResponse = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ certidao }),
     });
 
-    const data = await gsResponse.json();
+    const text = await gsResponse.text();
+    console.log('Resposta do Apps Script:', gsResponse.status, text);
 
-    return res.status(200).json(data);
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { ok: false, raw: text };
+    }
+
+    return res.status(gsResponse.status).json(data);
   } catch (error: any) {
-    console.error(error);
+    console.error('Erro na Vercel:', error);
     return res
       .status(500)
       .json({ ok: false, error: 'Erro ao falar com Apps Script' });
