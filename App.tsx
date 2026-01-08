@@ -50,7 +50,7 @@ export default function App() {
         }
       };
 
-      const response = await fetch(API_URL, {
+      const response = await fetch('/api/certidao', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json', 
