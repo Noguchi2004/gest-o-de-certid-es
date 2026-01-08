@@ -39,7 +39,7 @@ export default function App() {
       // Adjusted payload structure to match backend expectations
       const payload = {
         certidao: {
-          empresa: formdata.empresa,
+          empresa: formData.empresa,
           cnpj: formData.cnpj, // Mapping CNPJ to numero as primary identifier
           email: formData.email,
           tipoDocumento: formData.tipoDocumento,
