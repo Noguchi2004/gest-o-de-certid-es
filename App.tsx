@@ -39,14 +39,14 @@ export default function App() {
       // Adjusted payload structure to match backend expectations
       const payload = {
         certidao: {
-          numero: formData.cnpj, // Mapping CNPJ to numero as primary identifier
-          tipo: formData.tipoDocumento,
-          orgao: formData.orgao,
-          responsavel: formData.empresa, // Mapping Empresa to Responsavel
-          emailResponsavel: formData.email,
+          empresa: formdata.empresa,
+          cnpj: formData.cnpj, // Mapping CNPJ to numero as primary identifier
+          email: formData.email,
+          tipoDocumento: formData.tipoDocumento,
+          orgao: formData.orgao, // Mapping Empresa to Responsavel
           dataEmissao: formData.dataEmissao,
-          dataVencimento: formData.fimVigencia,
-          status: formData.statusNovoVenc
+          fimVigencia: formData.fimVigencia,
+          statusNovoVenc: formData.statusNovoVenc
         }
       };
 
